@@ -1,0 +1,26 @@
+{
+  "type": "module",
+  "name": "api-movie-note",
+  "version": "1.0.0",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "db": "prisma migrate dev"
+  },
+  "keywords": [],
+  "author": "Felipe",
+  "license": "ISC",
+  "description": "Api para notas de filmes",
+  "dependencies": {
+    "@prisma/client": "^5.1.1",
+    "bcryptjs": "^2.4.3",
+    "fastify": "^4.21.0",
+    "sqlite": "^5.0.1",
+    "sqlite3": "^5.1.6"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "prisma": "^5.1.1"
+  }
+}

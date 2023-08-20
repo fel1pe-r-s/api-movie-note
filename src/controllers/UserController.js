@@ -32,4 +32,33 @@ export class UserController {
     }
     reply.code(201);
   }
+  async update(request, reply){
+    const { name, email, password, new_password } = request.body;
+    const { user_id } = request.params;
+     const id =  Number(user_id)
+   
+    const user = await prismaClient.user.findFirst({
+      where: { id }
+    });
+    if (!user) {
+      throw new AppError("User not found");
+    }
+    const userWithUpdateEmail  = await prismaClient.user.findFirst({
+      where: { email }
+    });
+    if (userWithUpdateEmail && userWithUpdateEmail.id !== user.id) {
+      throw new AppError(`Email ${email} already exists`);
+    }
+
+    
+    if (password && current_password) {
+      const checkPassword = await compare(password, user.password);
+      if (!checkPassword) {
+        throw new AppError("Invalid current password, could not update password");
+      }
+      user.password = (await hash(new_password, 8)) || user.password;
+    }
+  
+    reply.code(201)
+  }
 }

@@ -41,20 +41,24 @@ export class UserController {
       where: { id }
     });
     if (!user) {
+      prismaClient.$disconnect();
       throw new AppError("User not found");
     }
     if (!password) {
+      prismaClient.$disconnect();
       throw new AppError("Password was not entered");
     } 
     const checkPassword = await bcryptjs.compare(password, user.password);
     if (!checkPassword) {
+      prismaClient.$disconnect();
       throw new AppError("Invalid password, could not update");
     } 
     const userWithUpdateEmail  = await prismaClient.user.findFirst({
       where: { email }
     });
     if (userWithUpdateEmail && userWithUpdateEmail.id !== user.id) {
-      throw new AppError(`Email ${email} already exists`);
+      prismaClient.$disconnect();
+      throw new AppError(`Email ${email} already exists`);      
     }  
     if (name || email) {      
       user.name = name ?? user.name;
@@ -74,7 +78,7 @@ export class UserController {
         updated_at: new Date()
       }
     })
-  
+    prismaClient.$disconnect();
     reply.send(result)
   }
 }

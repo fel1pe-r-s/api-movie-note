@@ -25,14 +25,14 @@ model User {
 }
 
 model Note {
-  id          Int      @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   title       String
   description String
-  rating      String
-  user        User     @relation(fields: [user_id], references: [id])
-  user_id     Int      @unique
-  created_at  DateTime @default(now())
-  updated_at  DateTime
+  rating      Int
+  user        User      @relation(fields: [user_id], references: [id])
+  user_id     Int
+  created_at  DateTime  @default(now())
+  updated_at  DateTime?
   tags        Tags[]
 
   @@map("movie_notes")
@@ -43,10 +43,10 @@ model Tags {
   name String
 
   note    Note @relation(fields: [note_id], references: [id])
-  note_id Int  @unique
+  note_id Int
 
   user    User @relation(fields: [user_id], references: [id])
-  user_id Int  @unique
+  user_id Int
 
   @@map("movie_tags")
 }

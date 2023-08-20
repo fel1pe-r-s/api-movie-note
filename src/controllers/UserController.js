@@ -43,22 +43,38 @@ export class UserController {
     if (!user) {
       throw new AppError("User not found");
     }
+    if (!password) {
+      throw new AppError("Password was not entered");
+    } 
+    const checkPassword = await bcryptjs.compare(password, user.password);
+    if (!checkPassword) {
+      throw new AppError("Invalid password, could not update");
+    } 
     const userWithUpdateEmail  = await prismaClient.user.findFirst({
       where: { email }
     });
     if (userWithUpdateEmail && userWithUpdateEmail.id !== user.id) {
       throw new AppError(`Email ${email} already exists`);
+    }  
+    if (name || email) {      
+      user.name = name ?? user.name;
+      user.email = email ?? user.email;
+      user.password = user.password
+    }    
+    if (password && new_password) {     
+      user.password = await bcryptjs.hash(new_password, 8);
     }
 
-    
-    if (password && current_password) {
-      const checkPassword = await compare(password, user.password);
-      if (!checkPassword) {
-        throw new AppError("Invalid current password, could not update password");
+    const result = await prismaClient.user.update({
+      where: { id: user.id},
+      data: {
+        name: user.name,
+        email: user.email,
+        password: user.password,
+        updated_at: new Date()
       }
-      user.password = (await hash(new_password, 8)) || user.password;
-    }
+    })
   
-    reply.code(201)
+    reply.send(result)
   }
 }

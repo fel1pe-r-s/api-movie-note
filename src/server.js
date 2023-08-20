@@ -2,6 +2,7 @@
 import Fastify from 'fastify'
 import {routeUser} from './routes/route.user.js'
 import {routeNote} from './routes/route.note.js'
+import { routeTag } from './routes/route.note copy.js'
 
 const fastify = Fastify({
   logger: true
@@ -14,6 +15,7 @@ fastify.get('/', async () =>{
 })
 fastify.register(routeUser)
 fastify.register(routeNote)
+fastify.register(routeTag)
 
 // Run the server!
 try {

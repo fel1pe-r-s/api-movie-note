@@ -4,7 +4,7 @@ import {routeUser} from './routes/route.user.js'
 import {routeNote} from './routes/route.note.js'
 
 const fastify = Fastify({
-  // logger: true
+  logger: true
 })
 
 

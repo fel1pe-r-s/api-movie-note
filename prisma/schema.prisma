@@ -29,7 +29,7 @@ model Note {
   title       String
   description String
   rating      Int
-  user        User      @relation(fields: [user_id], references: [id])
+  user        User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id     Int
   created_at  DateTime  @default(now())
   updated_at  DateTime?
@@ -42,10 +42,10 @@ model Tags {
   id   Int    @id @default(autoincrement())
   name String
 
-  note    Note @relation(fields: [note_id], references: [id])
+  note    Note @relation(fields: [note_id], references: [id], onDelete: Cascade)
   note_id Int
 
-  user    User @relation(fields: [user_id], references: [id])
+  user    User @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id Int
 
   @@map("movie_tags")

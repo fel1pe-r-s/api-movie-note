@@ -2,7 +2,7 @@
 import Fastify from 'fastify'
 import {routeUser} from './routes/route.user.js'
 import {routeNote} from './routes/route.note.js'
-import { routeTag } from './routes/route.note copy.js'
+import { routeTag } from './routes/route.tag.js'
 
 const fastify = Fastify({
   logger: true

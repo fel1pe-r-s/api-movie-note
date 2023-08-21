@@ -1,6 +1,7 @@
 import { prismaClient } from "../utils/prismaClient.js";
 
 export class NoteController {
+ 
   async create(request, reply) {
     const { title, description, rating, gender } = request.body;
     let { user_id } = request.params;
@@ -22,5 +23,19 @@ export class NoteController {
     });
     prismaClient.$disconnect();
     reply.code(201);
+  }
+
+  async delete(request, reply){
+    let {id} = request.params;
+    id = Number(id);
+    await prismaClient.note.delete(
+      {
+        where:{
+          id
+        }
+      }
+    )
+    prismaClient.$disconnect();
+    reply.code(200);
   }
 }

@@ -25,28 +25,35 @@ model User {
 }
 
 model Note {
-  id          Int       @id @default(autoincrement())
+  id          Int          @id @default(autoincrement())
   title       String
   description String
   rating      Int
-  user        User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user        User         @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id     Int
-  created_at  DateTime  @default(now())
+  created_at  DateTime     @default(now())
   updated_at  DateTime?
-  tags        Tags[]
+  noteToTags  NoteToTags[]
 
   @@map("movie_notes")
 }
 
 model Tags {
-  id   Int    @id @default(autoincrement())
-  name String
-
-  note    Note @relation(fields: [note_id], references: [id], onDelete: Cascade)
-  note_id Int
-
-  user    User @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id Int
+  id         Int          @id @default(autoincrement())
+  name       String
+  user       User         @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id    Int
+  noteToTags NoteToTags[]
 
   @@map("movie_tags")
+}
+
+model NoteToTags {
+  id      Int  @id @default(autoincrement())
+  note_id Int
+  note    Note @relation(fields: [note_id], references: [id], onDelete: Cascade)
+  tag_id  Int
+  tag     Tags @relation(fields: [tag_id], references: [id], onDelete: Cascade)
+
+  @@map("note_tags")
 }
